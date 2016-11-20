@@ -1,4 +1,4 @@
-import { Router, HttpRouter } from "./Router";
+import { HttpRouter } from "./Router";
 import { HttpMethod, RequestHandler } from "./types";
 import { IncomingMessage, ServerResponse } from "http";
 

@@ -7,7 +7,7 @@ export interface Router<T> {
 }
 
 export class HttpRouter<T> implements Router<T> {
-  rootNode: RouterNode<T>;
+  private rootNode: RouterNode<T>;
   constructor() {
     this.rootNode = new RouterNode<T>(null);
   }
@@ -85,7 +85,7 @@ export class HttpRouter<T> implements Router<T> {
   }
 }
 
-class RouteResult<T> {
+export class RouteResult<T> {
   params: { [index: string]: string };
   handler: T;
   parts: string[];
