@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "outDir": "dist/"
+  },
+  "filesGlob": [
+    "src/**/*.ts"
+  ]
+}

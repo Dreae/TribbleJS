@@ -1,0 +1,28 @@
+{
+  "name": "tribble-js",
+  "version": "1.0.0",
+  "description": "A simple typed web framework",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Dreae/TribbleJS.git"
+  },
+  "keywords": [
+    "web",
+    "framework"
+  ],
+  "author": "Dreae <dreae@dreae.onl>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Dreae/TribbleJS/issues"
+  },
+  "homepage": "https://github.com/Dreae/TribbleJS#readme",
+  "devDependencies": {
+    "@types/node": "^6.0.48",
+    "typescript": "^2.0.10"
+  }
+}
