@@ -2,23 +2,9 @@ import { Router, HttpRouter } from "./Router";
 import { HttpMethod, RequestHandler } from "./types";
 import { IncomingMessage, ServerResponse } from "http";
 
-export class Controller implements Router<RequestHandler> {
-  router: Router<RequestHandler>;
-
+export class Controller extends HttpRouter<RequestHandler> {
   constructor() {
-    this.router = new HttpRouter<RequestHandler>();
-  }
-
-  GET(path: string, handler: RequestHandler) {
-    this.router.GET(path, handler);
-  }
-
-  POST(path: string, handler: RequestHandler) {
-    this.router.POST(path, handler);
-  }
-
-  route(method: HttpMethod, path: string[]) {
-    return this.router.route(method, path);
+    super()
   }
 
   handle(routeParts: string[], request: IncomingMessage, response: ServerResponse) {

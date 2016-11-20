@@ -1,31 +1,18 @@
-import { Router, HttpRouter } from "./Router";
+import { HttpRouter } from "./Router";
 import { Controller } from "./Controller";
 import { HttpMethod } from "./types";
 import { Server, createServer, IncomingMessage, ServerResponse } from "http";
 
-export class Application implements Router<Controller> {
+export class Application extends HttpRouter<Controller> {
   port: number;
   address: string;
-  router: Router<Controller>;
   server: Server;
 
   constructor(port = 8080, address = "127.0.0.1") {
+    super();
     this.port = port;
     this.address = address;
     this.server = createServer(this.handle.bind(this));
-    this.router = new HttpRouter<Controller>();
-  }
-
-  GET(path: string, handler: Controller) {
-    this.router.GET(path, handler);
-  }
-
-  POST(path: string, handler: Controller) {
-    this.router.POST(path, handler);
-  }
-
-  route(method: HttpMethod, path: string) {
-    return this.router.route(method, path);
   }
 
   handle(request: IncomingMessage, response: ServerResponse) {

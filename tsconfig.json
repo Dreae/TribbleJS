@@ -2,7 +2,9 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "sourceMap": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "target": "es6",
+    "module": "commonjs"
   },
   "filesGlob": [
     "src/**/*.ts"
