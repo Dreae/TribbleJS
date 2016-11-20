@@ -1,6 +1,12 @@
 import { RequestHandler, HttpMethod } from "./types";
 
-export class Router {
+export interface Router {
+  GET(path: string, handler: RequestHandler);
+  POST(path: string, handler: RequestHandler);
+  route(method: HttpMethod, path: string);
+}
+
+export class HttpRouter implements Router {
   rootNode: RouterNode;
   constructor() {
     this.rootNode = new RouterNode(null);
@@ -31,15 +37,34 @@ export class Router {
     node.handlers[method] = handler;
   }
 
-  route(method: HttpMethod, path: string): RequestHandler {
-    return null;
+  route(method: HttpMethod, path: string): [{[index:string]: string}, RequestHandler] {
+    let parts = path.replace(/^\//, '').replace(/\/$/, '').split('/');
+    let node = this.rootNode;
+    let params = { };
+
+    while(parts.length > 0) {
+      let part = parts.shift();
+      if(node.children[part]) {
+        node = node.children[part]
+      } else {
+        Object.keys(node.children).map((key) => {
+          if(key[0] == ':') {
+            params[key.replace(/^:/, '')] = part;
+          }
+
+          node = node.children[key];
+        });
+      }
+    }
+
+    return [params, node.handlers[method]];
   }
 }
 
 class RouterNode {
   parent: RouterNode;
-  children: any;
-  handlers: any;
+  children: {[index: string]: RouterNode};
+  handlers: {[index: number]: RequestHandler};
   constructor(parent: RouterNode) {
     this.parent = parent;
     this.handlers = { };
