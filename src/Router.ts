@@ -20,6 +20,10 @@ export class HttpRouter<T> implements Router<T> {
     this.addHandler(HttpMethod.POST, path, handler);
   }
 
+  ANY(path: string, handler: T) {
+    this.addHandler(HttpMethod.ANY, path, handler);
+  }
+
   addHandler(method: HttpMethod, path: string, handler: T) {
     let parts = path.replace(/^\//, '').replace(/\/$/, '').split('/');
     if(parts[0] == '') {
@@ -81,7 +85,12 @@ export class HttpRouter<T> implements Router<T> {
       }
     }
 
-    return new RouteResult<T>(params, node.handlers[method], parts);
+    let handler = node.handlers[method];
+    if(handler) {
+      return new RouteResult<T>(params, node.handlers[method], parts);
+    } else {
+      return new RouteResult<T>(params, node.handlers[HttpMethod.ANY], parts);
+    }
   }
 }
 
