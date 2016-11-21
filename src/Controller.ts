@@ -5,8 +5,12 @@ import { HttpMethod, RequestHandler } from "./types";
 import { ServerResponse } from "http";
 
 export class Controller extends HttpRouter<RequestHandler> {
+  routes: {[index: string]: any};
   constructor() {
-    super()
+    super();
+    Object.keys(this.routes).map((key) => {
+      this.addHandler(this.routes[key].method, key, this.routes[key].handler.bind(this));
+    });
   }
 
   handle(routeParts: string[], request: Request): Promise<Response> {
@@ -16,6 +20,7 @@ export class Controller extends HttpRouter<RequestHandler> {
       return result.handler(request);
     } else {
       let response = new Response();
+      response.statusCode = 404;
       response.write("Not found");
 
       return Promise.resolve(response);

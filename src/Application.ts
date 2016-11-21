@@ -68,7 +68,7 @@ export class Application extends HttpRouter<Controller> {
     });
   }
 
-  listen(callback) {
+  listen(callback?) {
     this.server.listen(this.port, this.address, callback);
   }
 

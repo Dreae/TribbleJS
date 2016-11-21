@@ -7,10 +7,7 @@ export interface Router<T> {
 }
 
 export class HttpRouter<T> implements Router<T> {
-  private rootNode: RouterNode<T>;
-  constructor() {
-    this.rootNode = new RouterNode<T>();
-  }
+  private rootNode = new RouterNode<T>();
 
   GET(path: string, handler: T) {
     this.addHandler(HttpMethod.GET, path, handler);
@@ -62,19 +59,21 @@ export class HttpRouter<T> implements Router<T> {
 
     while(parts.length > 0) {
       let part = parts[0];
-    
-      if(node.children[part]) {
+
+      if(node.children[part] != undefined) {
         node = node.children[part]
         parts.shift();
       } else {
         let tempNode = null
-        Object.keys(node.children).map((key) => {
-          if(key[0] == ':') {
-            params[key.replace(/^:/, '')] = part;
+        let keys = Object.keys(node.children);
+        for(let i = 0; i < keys.length; i++) {
+          if(keys[i][0] == ':') {
+            params[keys[i].replace(/^:/, '')] = part;
           }
 
-          tempNode = node.children[key];
-        });
+          tempNode = node.children[keys[i]];
+          break;
+        }
 
         if(tempNode) {
           node = tempNode;

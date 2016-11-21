@@ -1,16 +1,32 @@
-import { RequestHandler } from "./types";
-import { Controller } from "./Controller";
+import { RequestHandler, HttpMethod } from "./types";
+import { Router } from "./Router";
 
-export function GET<T extends Controller>(path: string) {
-  return function(target: T, propertyKey: string, descriptor: TypedPropertyDescriptor<RequestHandler>) {
-    target.GET(path, descriptor.value);
+export function GET(path: string) {
+  return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    if(typeof target.routes == 'undefined') {
+      target.routes = {};
+    }
+
+    target.routes[path] = {
+      method: HttpMethod.GET,
+      handler: descriptor.value
+    };
+
     return descriptor;
   }
 }
 
-export function POST<T extends Controller>(path: string) {
-  return function(target: T, propertyKey: string, descriptor: TypedPropertyDescriptor<RequestHandler>) {
-    target.POST(path, descriptor.value);
+export function POST(path: string) {
+  return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    if(typeof target.routes == 'undefined') {
+      target.routes = {};
+    }
+    
+    target.routes[path] = {
+      method: HttpMethod.POST,
+      handler: descriptor.value
+    };
+
     return descriptor;
   }
 }
