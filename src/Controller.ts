@@ -17,6 +17,7 @@ export class Controller extends HttpRouter<RequestHandler> {
     let result = this.route(HttpMethod[request.method], routeParts);
 
     if(result.handler && result.parts.length == 0) {
+      Object.assign(request.params, result.params);
       return result.handler(request);
     } else {
       let response = new Response();

@@ -41,22 +41,24 @@ export class Application extends HttpRouter<Controller> {
   handle(request: IncomingMessage, response: ServerResponse) {
     let req: Request = makeRequest(request);
     this.parseBody(req).then(() => {
-      return this.runBefore(request);
+      return this.runBefore(req);
     }).then((res) => {
       let result = this.route(HttpMethod[request.method], request.url);
+
+      Object.assign(req.params, result.params);
       if(result.handler) {
         return result.handler.handle(result.parts, req).then((handlerRes) => {
           return res.compose(handlerRes);
         });
       } else {
         let res = new Response();
-        res.statusCode = 400;
+        res.statusCode = 404;
         res.write("Not found");
 
         return Promise.resolve(res);
       }
     }).then((res) => {
-      return this.runAfter(request, res);
+      return this.runAfter(req, res);
     }).then((res) => {
       res.finalize(response);
     }).catch((err) => {
