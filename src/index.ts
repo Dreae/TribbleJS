@@ -6,3 +6,4 @@ export * from "./Router";
 export * from "./types";
 export * from "./decorators";
 export * from "./Application";
+export * from "./Response";

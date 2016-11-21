@@ -9,7 +9,7 @@ export interface Router<T> {
 export class HttpRouter<T> implements Router<T> {
   private rootNode: RouterNode<T>;
   constructor() {
-    this.rootNode = new RouterNode<T>(null);
+    this.rootNode = new RouterNode<T>();
   }
 
   GET(path: string, handler: T) {
@@ -37,7 +37,7 @@ export class HttpRouter<T> implements Router<T> {
       if(node.children[part]) {
         node = node.children[part]
       } else {
-        let newNode = new RouterNode(node);
+        let newNode = new RouterNode<T>();
         node.children[part] = newNode;
         node = newNode;
       }
@@ -107,11 +107,9 @@ export class RouteResult<T> {
 }
 
 class RouterNode<T> {
-  parent: RouterNode<T>;
   children: {[index: string]: RouterNode<T>};
   handlers: {[index: number]: T};
-  constructor(parent: RouterNode<T>) {
-    this.parent = parent;
+  constructor() {
     this.handlers = { };
     this.children = { };
   }
