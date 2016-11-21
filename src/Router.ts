@@ -60,7 +60,7 @@ export class HttpRouter<T> implements Router<T> {
     while(parts.length > 0) {
       let part = parts[0];
 
-      if(node.children[part] != undefined) {
+      if(node.children[part]) {
         node = node.children[part]
         parts.shift();
       } else {
@@ -69,10 +69,9 @@ export class HttpRouter<T> implements Router<T> {
         for(let i = 0; i < keys.length; i++) {
           if(keys[i][0] == ':') {
             params[keys[i].replace(/^:/, '')] = part;
+            tempNode = node.children[keys[i]];
+            break;
           }
-
-          tempNode = node.children[keys[i]];
-          break;
         }
 
         if(tempNode) {
